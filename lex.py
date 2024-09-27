@@ -75,15 +75,22 @@ class Lexer:
 
     def getToken(self):
         self.skipWhiteSpace()
+        self.skipComment()
         token = None
+
+        # Plus token
         if self.curChar == '+':
             token = Token(self.curChar, TokenType.PLUS)
+        # Minus token
         elif self.curChar == '-':
             token = Token(self.curChar, TokenType.MINUS)
+        # Asterisk
         elif self.curChar == '*':
             token = Token(self.curChar, TokenType.ASTERISK)
+        # Slash
         elif self.curChar == '/':
             token = Token(self.curChar, TokenType.SLASH)
+        # Assignment and Equals ops
         elif self.curChar == '=':
             if self.peek() == '=':
                 lastChar = self.curChar
@@ -91,6 +98,7 @@ class Lexer:
                 token = Token(lastChar + self.curChar, TokenType.EQEQ)
             else:
                 token = Token(self.curChar, TokenType.EQ)
+        # > and >=
         elif self.curChar == '>':
             if self.peek() == '=':
                 lastChar = self.curChar
@@ -98,6 +106,7 @@ class Lexer:
                 token = Token(lastChar + self.curChar, TokenType.GTEQ)
             else:
                 token = Token(self.curChar, TokenType.GT)
+        # < and <=
         elif self.curChar == '<':
             if self.peek() == '=':
                 lastChar = self.curChar
@@ -105,6 +114,7 @@ class Lexer:
                 token = Token(lastChar + self.curChar, TokenType.LTEQ)
             else:
                 token = Token(self.curChar, TokenType.LT)
+        # !=
         elif self.curChar == '!':
             if self.peek() == '=':
                 lastChar = self.curChar
@@ -112,8 +122,23 @@ class Lexer:
                 token = Token(lastChar + self.curChar, TokenType.NOTEQ)
             else:
                 self.abort("Expected !=, got !" + self.peek())
+        # STRING type
+        elif self.curChar == '\"':
+            self.nextChar()
+            startPos = self.curPos
+            # no escape characters and no %
+            while self.curChar != '\"':
+                if self.curChar == '\r' or self.curChar == '\n' or self.curChar == '\t' or self.curChar == '\\' or self.curChar == '%':
+                    self.abort("Illegal character in string.")
+                self.nextChar()
+
+            tokText = self.source[startPos : self.curPos]
+            token = Token(tokText, TokenType.STRING)
+
+        # newline char
         elif self.curChar == '\n':
             token = Token(self.curChar, TokenType.NEWLINE)
+        # EOF char
         elif self.curChar == '\0':
             token = Token(self.curChar, TokenType.EOF)
         else:
