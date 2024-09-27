@@ -1,4 +1,5 @@
 import enum
+import sys 
 
 ## Specifies every possible token our language allows
 class TokenType(enum.Enum):
@@ -61,7 +62,7 @@ class Lexer:
             return self.source[self.curPos + 1]
 
     def abort(self, message):
-        pass
+        sys.exit("Lexing error. " + message)
 
     def skipWhiteSpace(self):
         pass
@@ -85,7 +86,7 @@ class Lexer:
             token = Token(self.curChar, TokenType.EOF)
         else:
             # unknown token
-            pass
+            self.abort("Unknown Token: " + self.curChar)
         
         self.nextChar()
         return token 
