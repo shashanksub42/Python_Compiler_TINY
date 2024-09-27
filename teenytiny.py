@@ -1,7 +1,7 @@
 from lex import *
 
 if __name__ == "__main__":
-    source = "+= \"This is a stringgg\" # comment comment "
+    source = "+-123 9.8654*/"
     lexer = Lexer(source)
 
     token = lexer.getToken()

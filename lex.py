@@ -135,6 +135,28 @@ class Lexer:
             tokText = self.source[startPos : self.curPos]
             token = Token(tokText, TokenType.STRING)
 
+        # NUMBERS
+        elif self.curChar.isdigit():
+            # store the start position of the number
+            startPos = self.curPos
+            # iterate until the next char is not a number
+            while self.peek().isdigit():
+                self.nextChar()
+            #check if next char is decimal
+            if self.peek() == '.':
+                self.nextChar()
+                # if the next char after the decimal point is not a number, then throw an error
+                if not self.peek().isdigit():
+                    self.abort("Illegal character in number.")
+                # keep moving to the next char until it is not a number
+                while self.peek().isdigit():
+                    self.nextChar()
+            
+            tokText = self.source[startPos : self.curPos+1]
+            token = Token(tokText, TokenType.NUMBER)
+
+
+
         # newline char
         elif self.curChar == '\n':
             token = Token(self.curChar, TokenType.NEWLINE)
