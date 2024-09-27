@@ -37,8 +37,8 @@ class TokenType(enum.Enum):
 ## Keep track of what type of token it is and the exact text from the code
 class Token:
     def __init__(self, tokenText, tokenKind):
-        self.tokenText = tokenText # Then token's actual text. Used for identifiers, strings and numbers
-        self.tokenKind = tokenKind # The token type that the token is classified as
+        self.text = tokenText # Then token's actual text. Used for identifiers, strings and numbers
+        self.kind = tokenKind # The token type that the token is classified as
 
 class Lexer:
     def __init__(self, source):

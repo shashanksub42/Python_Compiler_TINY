@@ -1,9 +1,10 @@
 from lex import *
 
 if __name__ == "__main__":
-    source = "LET foo = 123"
+    source = "+- */"
     lexer = Lexer(source)
 
-    while lexer.peek() != '\0':
-        print(lexer.curChar)
-        lexer.nextChar()
+    token = lexer.getToken()
+    while token.kind != TokenType.EOF:
+        print(token.kind)
+        token = lexer.getToken()
