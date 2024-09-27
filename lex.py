@@ -65,12 +65,14 @@ class Lexer:
         sys.exit("Lexing error. " + message)
 
     def skipWhiteSpace(self):
-        pass
+        while self.curChar == ' ' or self.curChar == '\t' or self.curChar == '\r':
+            self.nextChar()
 
     def skipComment(self):
         pass
 
     def getToken(self):
+        self.skipWhiteSpace()
         token = None
         if self.curChar == '+':
             token = Token(self.curChar, TokenType.PLUS)
@@ -80,6 +82,34 @@ class Lexer:
             token = Token(self.curChar, TokenType.ASTERISK)
         elif self.curChar == '/':
             token = Token(self.curChar, TokenType.SLASH)
+        elif self.curChar == '=':
+            if self.peek() == '=':
+                lastChar = self.curChar
+                self.nextChar()
+                token = Token(lastChar + self.curChar, TokenType.EQEQ)
+            else:
+                token = Token(self.curChar, TokenType.EQ)
+        elif self.curChar == '>':
+            if self.peek() == '=':
+                lastChar = self.curChar
+                self.nextChar()
+                token = Token(lastChar + self.curChar, TokenType.GTEQ)
+            else:
+                token = Token(self.curChar, TokenType.GT)
+        elif self.curChar == '<':
+            if self.peek() == '=':
+                lastChar = self.curChar
+                self.nextChar()
+                token = Token(lastChar + self.curChar, TokenType.LTEQ)
+            else:
+                token = Token(self.curChar, TokenType.LT)
+        elif self.curChar == '!':
+            if self.peek() == '=':
+                lastChar = self.curChar
+                self.nextChar()
+                token = Token(lastChar + self.curChar, TokenType.NOTEQ)
+            else:
+                self.abort("Expected !=, got !" + self.peek())
         elif self.curChar == '\n':
             token = Token(self.curChar, TokenType.NEWLINE)
         elif self.curChar == '\0':
