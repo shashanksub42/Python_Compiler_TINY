@@ -41,6 +41,13 @@ class Token:
         self.text = tokenText # Then token's actual text. Used for identifiers, strings and numbers
         self.kind = tokenKind # The token type that the token is classified as
 
+    @staticmethod
+    def checkIfKeyword(tokenText):
+        for kind in TokenType:
+            if kind.name == tokenText and kind.value >= 100 and kind.value < 200:
+                return kind
+        return None
+
 class Lexer:
     def __init__(self, source):
         self.source = source + '\n' #string of code which needs to be parsed
@@ -154,6 +161,19 @@ class Lexer:
             
             tokText = self.source[startPos : self.curPos+1]
             token = Token(tokText, TokenType.NUMBER)
+
+        # Identifiers and Keywords
+        elif self.curChar.isalpha():
+            startPos = self.curPos
+            while self.peek().isalnum():
+                self.nextChar()
+            
+            tokText = self.source[startPos : self.curPos+1]
+            keyword = Token.checkIfKeyword(tokText)
+            if keyword == None:
+                token = Token(tokText, TokenType.IDENT)
+            else:
+                token = Token(tokText, keyword)
 
 
 
