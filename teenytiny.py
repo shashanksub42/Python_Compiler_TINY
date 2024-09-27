@@ -1,7 +1,7 @@
 from lex import *
 
 if __name__ == "__main__":
-    source = "+- */"
+    source = "+- */ >>= = != =="
     lexer = Lexer(source)
 
     token = lexer.getToken()
