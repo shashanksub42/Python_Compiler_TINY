@@ -1,6 +1,7 @@
 from lex import *
-import sys
+from emit import *
 from parser import *
+import sys
 
 if __name__ == "__main__":
     print("Custom Compiler\n")
@@ -9,8 +10,11 @@ if __name__ == "__main__":
     with open(sys.argv[1], 'r') as f:
         source = f.read()
 
+    # initialize the lexer, parser and emitter
     lexer = Lexer(source)
-    parser = Parser(lexer)
+    emitter = Emitter("out.c")
+    parser = Parser(lexer, emitter)
 
     parser.program() # starts the parser
-    print("\nParsing complete.")
+    emitter.writeFile() # write to the output file
+    print("\nCompiling complete.")
