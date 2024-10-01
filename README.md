@@ -14,3 +14,10 @@ Finished coding the Parser.
 - Each aspect of the grammar is coded as functions in parser.py
 - The parser will check the syntax of the input code
 - It also checks for undeclared variables and if labels match the gotos
+
+
+Finished coding the Emitter.
+- emit.py will simply output C code and write it to a file
+- The parser will be controlling the emitter and the lexer.
+- As the parser moves through the parse tree that gets created while compiling, it emits small parts of C code and stores it in a string
+- Once the entire input file has been parsed, an "out.c" file is created to store the C code. 
