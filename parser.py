@@ -79,7 +79,7 @@ class Parser:
             self.nextToken()
             self.comparison()
 
-            self.matcht(TokenType.REPEAT)
+            self.match(TokenType.REPEAT)
             self.nl()
 
             while not self.checkToken(TokenType.ENDWHILE):
